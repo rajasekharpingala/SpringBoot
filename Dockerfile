@@ -1,7 +1,17 @@
-FROM openjdk:21-jdk-slim
+FROM gradle:jdk21-alpine AS build
 
-COPY build/libs/hello-world-0.0.1-SNAPSHOT.jar app.jar
+COPY --chown=gradle:gradle . /home/gradle/src
+
+WORKDIR /home/gradle/src
+
+RUN gradle bootJar --no-daemon
+
+FROM gradle:jdk21-alpine
+
+RUN mkdir /app
+
+COPY --from=build /home/gradle/src/build/libs/*.jar /app/server-0.0.1-SNAPSHOT.jar
 
 EXPOSE 8080
 
-ENTRYPOINT ["java", "-jar", "/app.jar"]
+ENTRYPOINT ["java","-jar","/app/server-0.0.1-SNAPSHOT.jar"]

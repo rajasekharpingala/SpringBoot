@@ -10,8 +10,8 @@ FROM gradle:jdk21-alpine
 
 RUN mkdir /app
 
-COPY --from=build /home/gradle/src/build/libs/*.jar /app/server-0.0.1-SNAPSHOT.jar
+COPY --from=build /home/gradle/src/build/libs/*.jar /app/helloworld-1.0-SNAPSHOT.jar
 
 EXPOSE 8080
 
-ENTRYPOINT ["java","-jar","/app/server-0.0.1-SNAPSHOT.jar"]
+ENTRYPOINT ["java","-jar","/app/helloworld-1.0-SNAPSHOT.jar"]
